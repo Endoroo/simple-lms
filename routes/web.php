@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('tests', 'TestController');
+Route::post('tests/frontend', 'TestController@frontend');
