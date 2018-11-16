@@ -1,5 +1,5 @@
 @extends('lms')
 
 @section('content')
-    <tests-index></tests-index>
+    <tests-index add-link="{{ url('tests/create') }}"></tests-index>
 @endsection

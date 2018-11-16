@@ -24,7 +24,7 @@ class TestController extends Controller
      */
     public function create()
     {
-        //
+		return response()->view('tests.form');
     }
 
     /**

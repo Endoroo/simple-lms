@@ -17,9 +17,11 @@
     <b-container>
         <b-navbar toggleable="md">
             <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+
+            <b-navbar-brand href="{{ url('/') }}">{{ config('app.name', 'ПромРесурс') }}</b-navbar-brand>
+
             <b-collapse is-nav id="nav_collapse">
                 <b-navbar-nav>
-                    <b-nav-item href="{{ url('/') }}">{{ __('Главная') }}</b-nav-item>
                 </b-navbar-nav>
 
                 <b-navbar-nav class="ml-auto">

@@ -18,6 +18,7 @@ Vue.use(BootstrapVue);
  */
 
 Vue.component('tests-index', require('./components/TestsIndex.vue'));
+Vue.component('tests-form', require('./components/TestsForm.vue'));
 
 const app = new Vue({
     el: '#app'
