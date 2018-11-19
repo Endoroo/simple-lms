@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Test;
 use Illuminate\Http\Request;
+use Validator;
 
 class TestController extends Controller
 {
@@ -35,7 +36,30 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+		$data = $request->all();
+		$validator = Validator::make($request->all(), [
+			'name' => 'required|max:255',
+			'settings.time' => 'required|regex:/\d{2}:\d{2}/',
+			'settings.percent' => 'required|integer',
+			'settings.retake' => 'required|integer',
+			'settings.options' => 'array',
+		]);
+
+		if ($validator->fails()) {
+			return redirect('tests/create')
+				->withErrors($validator)
+				->withInput();
+		}
+		if (!isset($data['settings']['options'])) {
+			$data['settings']['options'] = [];
+		}
+
+		$test = new Test;
+		$test->name = $data['name'];
+		$test->settings = $data['settings'];
+		$test->save();
+
+		return redirect('tests')->with('message', 'Тест добавлен');
     }
 
     /**

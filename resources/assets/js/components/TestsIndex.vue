@@ -1,5 +1,6 @@
 <template>
     <b-container>
+        <b-alert v-if="message !== ''" show dismissible>{{ message }}</b-alert>
         <b-card :header="title">
             <a :href="addLink">{{ add }}</a>
             <b-table :items="items" :fields="fields"></b-table>
@@ -9,7 +10,7 @@
 
 <script>
     export default {
-        props: ["addLink"],
+        props: ["addLink", "message"],
         data() {
             return {
               items: [],
