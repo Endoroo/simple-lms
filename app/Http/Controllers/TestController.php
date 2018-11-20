@@ -104,7 +104,9 @@ class TestController extends Controller
      */
     public function destroy($id)
     {
-        //
+    	$test = Test::find($id);
+    	$test->delete();
+        return $this->frontend();
     }
 
     public function frontend()
