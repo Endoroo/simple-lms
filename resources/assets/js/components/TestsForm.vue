@@ -9,9 +9,10 @@
                                   name="name"
                                   v-model="form.name"
                                   type="text"
-                                  placeholder="введите название теста"></b-form-input>
+                                  placeholder="введите название теста"
+                                  :state="check(form.name, 'name')"></b-form-input>
+                    <b-form-invalid-feedback id="test-name">{{ errors.name }}</b-form-invalid-feedback>
                 </b-form-group>
-                {{ errors.name }}
 
                 <b-card header="Настройки" class="mb-4">
                     <b-form-group label-for="test-time" label="Время прохождения">
@@ -19,26 +20,35 @@
                                       name="settings[time]"
                                       v-model="form.settings.time"
                                       type="time"
-                                      placeholder="сколько длится тест"></b-form-input>
+                                      placeholder="сколько длится тест"
+                                      :state="check(form.settings.time, 'settings.time')"></b-form-input>
+                        <b-form-invalid-feedback id="test-time"
+                                                 v-if="typeof errors['settings.time'] !== 'undefined'">{{ errors['settings.time'] }}</b-form-invalid-feedback>
                     </b-form-group>
                     <b-form-group label-for="test-percent" label="Процент правильных ответов для сдачи">
                         <b-form-input id="test-percent"
                                       name="settings[percent]"
                                       v-model="form.settings.percent"
                                       type="number"
-                                      placeholder="введите число"></b-form-input>
+                                      placeholder="введите число"
+                                      :state="check(form.settings.percent, 'settings.percent')"></b-form-input>
+                        <b-form-invalid-feedback id="test-percent"
+                                                 v-if="typeof errors['settings.percent'] !== 'undefined'">{{ errors['settings.percent'] }}</b-form-invalid-feedback>
                     </b-form-group>
                     <b-form-group label-for="test-retake" label="Количество пересдач">
                         <b-form-input id="test-retake"
                                       name="settings[retake]"
                                       v-model="form.settings.retake"
                                       type="number"
-                                      placeholder="введите число"></b-form-input>
+                                      placeholder="введите число"
+                                      :state="check(form.settings.retake, 'settings.retake')"></b-form-input>
+                        <b-form-invalid-feedback id="test-time"
+                                                 v-if="typeof errors['settings.retake'] !== 'undefined'">{{ errors['settings.retake'] }}</b-form-invalid-feedback>
                     </b-form-group>
                 </b-card>
 
                 <b-card header="Опции">
-                    <b-form-checkbox-group id="options" name="options[]" v-model="form.settings.options">
+                    <b-form-checkbox-group id="options" name="settings[options][]" v-model="form.settings.options">
                         <b-form-checkbox value="random_order">Случайный порядок вопросов</b-form-checkbox>
                         <b-form-checkbox value="allow_skip">Возможность пропускать вопросы</b-form-checkbox>
                         <b-form-checkbox value="allow_back">Возможность возвращаться назад</b-form-checkbox>
@@ -52,7 +62,7 @@
 
 <script>
   export default {
-    props: ["url", "csrf", "errors"],
+    props: ["url", "csrf", "errors", "default"],
     data() {
       return {
         form: {
@@ -64,6 +74,19 @@
             options: []
           }
         }
+      }
+    },
+    methods: {
+      check: function(value, key) {
+        if (!value) {
+          return typeof this.errors[key] !== 'undefined' ? false : null;
+        }
+        return null
+      }
+    },
+    mounted() {
+      if (Object.getOwnPropertyNames(this.default).length > 1) {
+        this.form = this.default;
       }
     }
   }

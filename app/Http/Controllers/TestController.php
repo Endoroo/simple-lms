@@ -42,13 +42,13 @@ class TestController extends Controller
 			'settings.time' => 'required|regex:/\d{2}:\d{2}/',
 			'settings.percent' => 'required|integer',
 			'settings.retake' => 'required|integer',
-			'settings.options' => 'array',
+			'settings.options' => 'array|present',
 		]);
 
 		if ($validator->fails()) {
 			return redirect('tests/create')
 				->withErrors($validator)
-				->withInput();
+				->withInput($data);
 		}
 		if (!isset($data['settings']['options'])) {
 			$data['settings']['options'] = [];
