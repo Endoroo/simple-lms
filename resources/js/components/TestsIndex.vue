@@ -5,7 +5,7 @@
             <a :href="addLink">{{ add }}</a>
             <b-table :items="items" :fields="fields">
                 <template slot="actions" slot-scope="data">
-                    <b-button variant="secondary">Редактировать</b-button>
+                    <b-button variant="secondary" :href="'/tests/' + data.item.id + '/edit'">Редактировать</b-button>
                     <b-button variant="danger" @click="deleteTest(data.item.id)">Удалить</b-button>
                 </template>
             </b-table>

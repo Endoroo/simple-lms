@@ -13,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $path = base_path() . '/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/views';
+        if (file_exists($path)) {
+            $this->app['view']->addNamespace('errors', $path);
+        }
     }
 
     /**

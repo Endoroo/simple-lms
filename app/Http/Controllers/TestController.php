@@ -25,7 +25,7 @@ class TestController extends Controller
      */
     public function create()
     {
-		return response()->view('tests.form');
+		return response()->view('tests.create');
     }
 
     /**
@@ -81,7 +81,11 @@ class TestController extends Controller
      */
     public function edit($id)
     {
-        //
+        /* @var $test Test */
+        if ($test = Test::find($id)) {
+            return response()->view('tests.edit', ['test' => $test->toArray()]);
+        }
+        return response()->view('errors::403', ['exception' => new \Exception(__('Access denied'))]);
     }
 
     /**
@@ -93,7 +97,31 @@ class TestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'settings.time' => 'required|regex:/\d{2}:\d{2}/',
+            'settings.percent' => 'required|integer',
+            'settings.retake' => 'required|integer',
+            'settings.options' => 'array|present',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('tests/create')
+                ->withErrors($validator)
+                ->withInput($data);
+        }
+        if (!isset($data['settings']['options'])) {
+            $data['settings']['options'] = [];
+        }
+
+        if ($test = Test::find($id)) {
+            $test->name = $data['name'];
+            $test->settings = $data['settings'];
+            $test->save();
+            return redirect('tests/' . $id . '/edit')->with('message', 'Тест отредактирован');
+        }
+        return response()->view('errors::403', ['exception' => new \Exception(__('Access denied'))]);
     }
 
     /**

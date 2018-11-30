@@ -4,5 +4,7 @@
     <tests-form url="{{ url()->to('/tests') }}"
                 csrf="{{ csrf_token() }}"
                 :errors="{{ json_encode($errors->messages()) }}"
-                :default="{{ json_encode(old()) }}"></tests-form>
+                message="{{ session('message') }}"
+                :default="{{ json_encode(old()) }}"
+                :test="{{ json_encode($test) }}"></tests-form>
 @endsection

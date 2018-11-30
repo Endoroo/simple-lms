@@ -1,8 +1,9 @@
 <template>
     <b-container>
+        <b-alert v-if="message !== ''" show dismissible>{{ message }}</b-alert>
         <b-card header="Добавление теста">
             <a :href="url">Отмена</a>
-            <b-form :action="url" method="post">
+            <b-form :action="action" method="post">
                 <b-button type="submit" variant="primary">Сохранить</b-button>
                 <b-form-group label-for="test-name" label="Название теста">
                     <b-form-input id="test-name"
@@ -55,39 +56,46 @@
                     </b-form-checkbox-group>
                 </b-card>
                 <input type="hidden" :value="csrf" name="_token"/>
+                <input v-if="method === 'put' "name="_method" type="hidden" value="PUT">
             </b-form>
         </b-card>
     </b-container>
 </template>
 
 <script>
-  export default {
-    props: ["url", "csrf", "errors", "default"],
-    data() {
-      return {
-        form: {
-          name: '',
-          settings: {
-            time: '',
-            percent: '',
-            retake: '',
-            options: []
-          }
+    export default {
+        props: ["url", "csrf", "errors", "message", "default", "test"],
+        data() {
+            return {
+                action: this.url,
+                form: {
+                    name: '',
+                    settings: {
+                        time: '',
+                        percent: '',
+                        retake: '',
+                        options: []
+                    }
+                }
+            }
+        },
+        methods: {
+        check: function(value, key) {
+            if (!value) {
+                return typeof this.errors[key] !== 'undefined' ? false : null;
+            }
+            return null
         }
-      }
-    },
-    methods: {
-      check: function(value, key) {
-        if (!value) {
-          return typeof this.errors[key] !== 'undefined' ? false : null;
+        },
+        mounted() {
+            if (Object.getOwnPropertyNames(this.test).length > 1) {
+                this.form = this.test;
+                this.method = 'put';
+                this.action = this.url + '/' + this.test.id
+            }
+            if (Object.getOwnPropertyNames(this.default).length > 1) {
+                this.form = this.default
+            }
         }
-        return null
-      }
-    },
-    mounted() {
-      if (Object.getOwnPropertyNames(this.default).length > 1) {
-        this.form = this.default;
-      }
     }
-  }
 </script>
