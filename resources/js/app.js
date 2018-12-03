@@ -20,5 +20,11 @@ files.keys().map(key => {
 });
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    methods: {
+        logout: function (event) {
+            event.preventDefault();
+            document.getElementById('logout-form').submit();
+        }
+    }
 });

@@ -1,13 +1,42 @@
-
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
-
 // Variables
-@import "variables";
+@import 'variables';
 
 // Bootstrap
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-vue/dist/bootstrap-vue.min.css';
 
-// Bootstrap Vue
-@import '~bootstrap/dist/css/bootstrap.css';
-@import '~bootstrap-vue/dist/bootstrap-vue.css';
+.loader-wrap {
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  height: auto;
+  min-height: 100%;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1051;
+}
+.loader-wrap img {
+  margin: auto;
+  width: 128px;
+}
+.loader-open { overflow: hidden; }
+.collapsed > .when-opened,
+:not(.collapsed) > .when-closed,
+div.btc-deposit:empty, div.btc-deposit span:empty, p.log-info:empty {
+  display: none;
+}
+.btn-group.is-invalid ~ .invalid-feedback {
+  display: block;
+
+}
+.btn-group.is-invalid .btn {
+  border-color: #e3342f;
+  color: #e3342f;
+}
+.btn.is-invalid {
+   border-color: #e3342f;
+ }
+.btn.is-invalid {
+  border-width: 0.15rem
+}
+
