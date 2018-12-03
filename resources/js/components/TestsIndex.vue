@@ -1,7 +1,7 @@
 <script>
     export default {
         template: require('../../templates/TestIndex.html'),
-        props: ["addLink", "message"],
+        props: ["addLink", "message", "questionTypes"],
         data() {
             return {
                 internalMessage: this.message,
@@ -11,12 +11,7 @@
                 add: '',
                 test: null,
                 error: false,
-                qTypes: [
-                    { value: null, text: '...' },
-                    { value: 'list', text: 'Вопрос с несколькими ответами' },
-                    { value: 'file', text: 'Вопрос с загрузкой файла' },
-                    { value: 'text', text: 'Вопрос с текстовым ответом' },
-                ],
+                qTypes: this.questionTypes,
                 question: {}
             }
         },
@@ -127,7 +122,7 @@
                 this.add = response.data.add;
                 this.fields = response.data.fields;
                 this.items = response.data.items
-                })
+            })
         }
     }
 </script>

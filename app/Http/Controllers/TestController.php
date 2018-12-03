@@ -15,7 +15,10 @@ class TestController extends Controller
      */
     public function index()
     {
-        return response()->view('tests.index', Test::all());
+        return response()->view('tests.index', [
+        	'tests' => Test::all(),
+			'questionTypes' => Test::getTypes()
+		]);
     }
 
     /**

@@ -48,4 +48,14 @@ class Test extends Model
 
 		return $result;
 	}
+
+	static public function getTypes()
+	{
+		return [
+			['value' => null, 'text' => '...'],
+			['value' => 'list', 'text' => __('list')],
+			['value' => 'file', 'text' => __('file')],
+			['value' => 'text', 'text' => __('text')],
+		];
+	}
 }
