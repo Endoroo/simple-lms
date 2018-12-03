@@ -13,10 +13,10 @@ window.Vue.use(BootstrapVue);
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-const files = require.context('./', true, /\.vue$/i);
+const components = require.context('./', true, /\.vue$/i);
 
-files.keys().map(key => {
-    return Vue.component(_.last(key.split('/')).split('.')[0], files(key))
+components.keys().map(key => {
+    return Vue.component(_.last(key.split('/')).split('.')[0], components(key))
 });
 
 const app = new Vue({

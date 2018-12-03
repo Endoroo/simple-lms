@@ -7,4 +7,5 @@
                 message="{{ session('message') }}"
                 :default="{{ json_encode(old()) }}"
                 :test="{{ json_encode($test) }}"></tests-form>
+    <questions-index :questions="{{ json_encode($questions) }}"></questions-index>
 @endsection

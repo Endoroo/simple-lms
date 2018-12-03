@@ -83,7 +83,10 @@ class TestController extends Controller
     {
         /* @var $test Test */
         if ($test = Test::find($id)) {
-            return response()->view('tests.edit', ['test' => $test->toArray()]);
+            return response()->view('tests.edit', [
+            	'test' => $test->toArray(),
+				'questions' => $test->listQuestions()
+			]);
         }
         return response()->view('errors::403', ['exception' => new \Exception(__('Access denied'))]);
     }

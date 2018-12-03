@@ -33,4 +33,19 @@ class Test extends Model
     {
         return $this->hasMany('App\Question');
     }
+
+    public function listQuestions()
+	{
+		$result = [];
+		foreach ($this->questions as $question) {
+			$result[] = (object)[
+				'id' => $question->id,
+				'question' => $question->question,
+				'type' => __($question->type),
+				'points' => 'Максимальное количество баллов за вопрос: ' . $question->points
+			];
+		}
+
+		return $result;
+	}
 }

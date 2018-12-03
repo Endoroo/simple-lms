@@ -1,7 +1,7 @@
 <template>
     <b-container>
         <b-alert v-if="message !== ''" show dismissible>{{ message }}</b-alert>
-        <b-card header="Добавление теста">
+        <b-card :header="header">
             <a :href="url" class="d-block pb-4">Отмена</a>
             <b-form :action="action" method="post">
                 <b-button type="submit" variant="primary">Сохранить</b-button>
@@ -68,6 +68,7 @@
         data() {
             return {
                 action: this.url,
+                header: '',
                 method: 'post',
                 form: {
                     name: '',
@@ -81,20 +82,22 @@
             }
         },
         methods: {
-        check: function(value, key) {
-            if (!value) {
-                return typeof this.errors[key] !== 'undefined' ? false : null;
+            check: function(value, key) {
+                if (!value) {
+                    return typeof this.errors[key] !== 'undefined' ? false : null;
+                }
+                return null
             }
-            return null
-        }
         },
         mounted() {
             if (Object.getOwnPropertyNames(this.test).length > 1) {
+                this.header = "Редактирование теста";
                 this.form = this.test;
                 this.method = 'put';
                 this.action = this.url + '/' + this.test.id
             }
             if (Object.getOwnPropertyNames(this.default).length > 1) {
+                this.header = "Добавление теста";
                 this.form = this.default
             }
         }
