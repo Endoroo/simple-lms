@@ -1,7 +1,11 @@
 @extends('lms')
 
 @section('content')
-    <tests-index add-link="{{ url('tests/create') }}"
+    <tests-index base-url="{{ url('tests') }}"
                  message="{{ session('message') }}"
-                 :question-types="{{ json_encode($questionTypes) }}"></tests-index>
+                 :tests="{{ json_encode($tests) }}"
+                 :question-types="{{ json_encode($questionTypes) }}"
+                 title="{{ $title }}"
+                 add="{{ $add }}"
+                 :fields="{{ json_encode($fields) }}"></tests-index>
 @endsection

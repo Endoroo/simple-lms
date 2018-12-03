@@ -25,13 +25,13 @@
                 </b-navbar-nav>
 
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-item-dropdown right>
-                        <!-- Using button-content slot -->
-                        <template slot="button-content">
-                            <em>{{ __('Пользователь') }}</em>
-                        </template>
-                        <b-dropdown-item href="#">{{ __('Профиль') }}</b-dropdown-item>
-                        <b-dropdown-item href="#">{{ __('Выйти') }}</b-dropdown-item>
+                    <b-nav-item-dropdown text="{{ Auth::user()->name }}" right>
+                        <b-dropdown-item href="{{ url('/') }}">{{ __('Main page') }}</b-dropdown-item>
+                        <b-dropdown-item href="#" @click="logout">{{ __('Logout') }}
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
             </b-collapse>

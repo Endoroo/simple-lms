@@ -1,14 +1,11 @@
 <script>
     export default {
         template: require('../../templates/TestIndex.html'),
-        props: ["addLink", "message", "questionTypes"],
+        props: ["baseUrl", "message", "tests", "questionTypes", "title", "add", "fields"],
         data() {
             return {
                 internalMessage: this.message,
-                items: [],
-                fields: [],
-                title: '',
-                add: '',
+                items: this.tests,
                 test: null,
                 error: false,
                 qTypes: this.questionTypes,
@@ -17,7 +14,7 @@
         },
         methods: {
             deleteTest: function (id) {
-                axios.delete('/tests/' + id).then(response => {
+                axios.delete(this.baseUrl + '/' + id).then(response => {
                     this.items = response.data.items
                 })
             },
@@ -117,12 +114,6 @@
         },
         mounted() {
             this.flushForm();
-            axios.post('/tests/frontend').then(response => {
-                this.title = response.data.title;
-                this.add = response.data.add;
-                this.fields = response.data.fields;
-                this.items = response.data.items
-            })
         }
     }
 </script>

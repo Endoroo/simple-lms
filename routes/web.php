@@ -16,7 +16,6 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::resource('tests', 'TestController');
-    Route::post('tests/frontend', 'TestController@frontend');
 
     Route::post('questions', 'QuestionController@create');
 });

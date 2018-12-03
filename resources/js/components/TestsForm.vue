@@ -2,7 +2,7 @@
     <b-container>
         <b-alert v-if="message !== ''" show dismissible>{{ message }}</b-alert>
         <b-card :header="header">
-            <a :href="url" class="d-block pb-4">Отмена</a>
+            <a :href="baseUrl" class="d-block pb-4">Отмена</a>
             <b-form :action="action" method="post">
                 <b-button type="submit" variant="primary">Сохранить</b-button>
                 <b-form-group label-for="test-name" label="Название теста">
@@ -20,8 +20,8 @@
                         <b-form-input id="test-time"
                                       name="settings[time]"
                                       v-model="form.settings.time"
-                                      type="time"
-                                      placeholder="сколько длится тест"
+                                      type="time" step="2"
+                                      description="ЧЧ:ММ:СС - сколько длится тест"
                                       :state="check(form.settings.time, 'settings.time')"></b-form-input>
                         <b-form-invalid-feedback id="test-time"
                                                  v-if="typeof errors['settings.time'] !== 'undefined'">{{ errors['settings.time'] }}</b-form-invalid-feedback>
@@ -42,6 +42,7 @@
                                       v-model="form.settings.retake"
                                       type="number"
                                       placeholder="введите число"
+                                      description="0 - бесконечное число попыток"
                                       :state="check(form.settings.retake, 'settings.retake')"></b-form-input>
                         <b-form-invalid-feedback id="test-time"
                                                  v-if="typeof errors['settings.retake'] !== 'undefined'">{{ errors['settings.retake'] }}</b-form-invalid-feedback>
@@ -64,18 +65,18 @@
 
 <script>
     export default {
-        props: ["url", "csrf", "errors", "message", "default", "test"],
+        props: ["baseUrl", "csrf", "errors", "message", "default", "test"],
         data() {
             return {
-                action: this.url,
+                action: this.baseUrl,
                 header: '',
                 method: 'post',
                 form: {
                     name: '',
                     settings: {
-                        time: '',
-                        percent: '',
-                        retake: '',
+                        time: '02:00:00',
+                        percent: 75,
+                        retake: 0,
                         options: []
                     }
                 }
@@ -94,7 +95,7 @@
                 this.header = "Редактирование теста";
                 this.form = this.test;
                 this.method = 'put';
-                this.action = this.url + '/' + this.test.id
+                this.action = this.baseUrl + '/' + this.test.id
             }
             if (Object.getOwnPropertyNames(this.default).length > 1) {
                 this.header = "Добавление теста";

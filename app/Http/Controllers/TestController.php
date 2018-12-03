@@ -15,9 +15,25 @@ class TestController extends Controller
      */
     public function index()
     {
+    	$tests = Test::all();
+		$items = [];
+		foreach ($tests as $test) {
+			$items[] = [
+				'id' => $test->id,
+				'name' => $test->name,
+				'actions' => true
+			];
+		}
         return response()->view('tests.index', [
-        	'tests' => Test::all(),
-			'questionTypes' => Test::getTypes()
+        	'tests' => $items,
+			'questionTypes' => Test::getTypes(),
+			'title' => __('Тесты'),
+			'add' => __('Добавить тест'),
+			'fields' =>  [
+				'id' => [ 'label' => '№'],
+				'name' => [ 'label' => __('Заголовок')],
+				'actions' => [ 'label' => __('Действия')],
+			],
 		]);
     }
 
@@ -142,28 +158,4 @@ class TestController extends Controller
     	$test->delete();
         return $this->frontend();
     }
-
-    public function frontend()
-	{
-		$tests = Test::all();
-		$items = [];
-		foreach ($tests as $test) {
-			$items[] = [
-				'id' => $test->id,
-				'name' => $test->name,
-				'actions' => true
-			];
-		}
-
-		return response()->json([
-			'title' => __('Тесты'),
-			'add' => __('Добавить тест'),
-			'fields' =>  [
-				'id' => [ 'label' => '№'],
-				'name' => [ 'label' => __('Заголовок')],
-				'actions' => [ 'label' => __('Действия')],
-			],
-			'items' =>  $items
-		]);
-	}
 }
