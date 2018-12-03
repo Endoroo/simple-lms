@@ -28,4 +28,9 @@ class Test extends Model
 	{
 		$this->attributes['settings'] = json_encode($value);
 	}
+
+    public function questions()
+    {
+        return $this->hasMany('App\Question');
+    }
 }

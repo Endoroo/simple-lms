@@ -2,7 +2,7 @@
     <b-container>
         <b-alert v-if="message !== ''" show dismissible>{{ message }}</b-alert>
         <b-card header="Добавление теста">
-            <a :href="url">Отмена</a>
+            <a :href="url" class="d-block pb-4">Отмена</a>
             <b-form :action="action" method="post">
                 <b-button type="submit" variant="primary">Сохранить</b-button>
                 <b-form-group label-for="test-name" label="Название теста">
@@ -68,6 +68,7 @@
         data() {
             return {
                 action: this.url,
+                method: 'post',
                 form: {
                     name: '',
                     settings: {
