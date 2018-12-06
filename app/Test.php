@@ -42,7 +42,8 @@ class Test extends Model
 				'id' => $question->id,
 				'question' => $question->question,
 				'type' => __($question->type),
-				'points' => 'Максимальное количество баллов за вопрос: ' . $question->points
+				'points' => 'Максимальное количество баллов за вопрос: ' . $question->points,
+                'object' => $question->toArray()
 			];
 		}
 

@@ -9,5 +9,6 @@
                 :test="{{ json_encode($test) }}"></tests-form>
     <questions-index :questions="{{ json_encode($questions) }}"
                      base-url="{{ url('/') }}"
-                     test-id="{{ isset($test['id']) ? $test['id'] : 0 }}"></questions-index>
+                     test-id="{{ isset($test['id']) ? $test['id'] : 0 }}"
+                     :question-types="{{ isset($test['id']) ? json_encode($questionTypes) : [] }}"></questions-index>
 @endsection
