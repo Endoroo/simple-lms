@@ -100,7 +100,7 @@
                 if (correct) {
                     this.question.test_id = this.test;
 
-                    axios.post(baseUrl + '/questions', this.question).then(response => {
+                    axios.post(this.baseUrl + '/questions', this.question).then(response => {
                         if (response.data.success) {
                             this.test = null;
                             this.flushForm();

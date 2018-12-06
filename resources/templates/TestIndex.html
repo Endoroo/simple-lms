@@ -6,12 +6,12 @@
             <template slot="actions" slot-scope="data">
                 <b-row>
                     <b-col>
-                        <b-btn variant="success" size="sm" :href="'/tests/' + data.item.id + '/run'">Пройти тест</b-btn>
-                        <b-btn variant="secondary" size="sm" :href="'/tests/' + data.item.id + '/results'" disabled>Результаты теста</b-btn>
+                        <b-btn variant="success" size="sm" :href="baseUrl + '/tests/' + data.item.id + '/run'">Пройти тест</b-btn>
+                        <b-btn variant="secondary" size="sm" :href="baseUrl + '/tests/' + data.item.id + '/results'" disabled>Результаты теста</b-btn>
                     </b-col>
                     <b-col>
                         <b-btn variant="primary" size="sm" @click="showForm(data.item.id)">Добавить вопрос</b-btn>
-                        <b-btn variant="secondary" size="sm" :href="'/tests/' + data.item.id + '/edit'">Редактировать</b-btn>
+                        <b-btn variant="secondary" size="sm" :href="baseUrl + '/tests/' + data.item.id + '/edit'">Редактировать</b-btn>
                         <b-btn variant="danger" size="sm" @click="deleteTest(data.item.id)">Удалить</b-btn>
                     </b-col>
                 </b-row>
