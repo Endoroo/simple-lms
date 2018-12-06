@@ -27,4 +27,13 @@ class QuestionController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Добавление прошло успешно']);
     }
+
+    public function destroy($id)
+    {
+        if (Question::find($id)) {
+            Question::destroy($id);
+            return response()->json(['success' => true, 'message' => 'Удаление прошло успешно']);
+        }
+        return response()->json(['errors' => 'question', 'message' => 'Вопрос не найден']);
+    }
 }

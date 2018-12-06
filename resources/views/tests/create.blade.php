@@ -1,7 +1,7 @@
 @extends('lms')
 
 @section('content')
-    <tests-form base-url="{{ url()->to('/tests') }}"
+    <tests-form base-url="{{ url('tests') }}"
                 csrf="{{ csrf_token() }}"
                 :errors="{{ json_encode($errors->messages()) }}"
                 message="{{ session('message') }}"

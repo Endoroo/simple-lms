@@ -18,6 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('tests', 'TestController');
 
     Route::post('questions', 'QuestionController@create');
+    Route::delete('questions/{id}', 'QuestionController@destroy')->where('id', '[0-9]+');
 });
 Auth::routes();
 
