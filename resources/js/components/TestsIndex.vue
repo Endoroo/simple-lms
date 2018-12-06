@@ -14,7 +14,7 @@
         },
         methods: {
             deleteTest: function (id) {
-                axios.delete(this.baseUrl + '/' + id).then(response => {
+                axios.delete(this.baseUrl + '/tests/' + id).then(response => {
                     this.items = response.data.items
                 })
             },
@@ -100,7 +100,7 @@
                 if (correct) {
                     this.question.test_id = this.test;
 
-                    axios.post('/questions', this.question).then(response => {
+                    axios.post(baseUrl + '/questions', this.question).then(response => {
                         if (response.data.success) {
                             this.test = null;
                             this.flushForm();

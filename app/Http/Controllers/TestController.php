@@ -13,7 +13,7 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($unpack = false)
     {
     	$tests = Test::all();
 		$items = [];
@@ -24,17 +24,18 @@ class TestController extends Controller
 				'actions' => true
 			];
 		}
-        return response()->view('tests.index', [
-        	'tests' => $items,
-			'questionTypes' => Test::getTypes(),
-			'title' => __('Тесты'),
-			'add' => __('Добавить тест'),
-			'fields' =>  [
-				'id' => [ 'label' => '№'],
-				'name' => [ 'label' => __('Заголовок')],
-				'actions' => [ 'label' => __('Действия')],
-			],
-		]);
+		$result = [
+            'tests' => $items,
+            'questionTypes' => Test::getTypes(),
+            'title' => __('Тесты'),
+            'add' => __('Добавить тест'),
+            'fields' =>  [
+                'id' => [ 'label' => '№'],
+                'name' => [ 'label' => __('Заголовок')],
+                'actions' => [ 'label' => __('Действия')],
+            ]
+        ];
+        return !$unpack ? response()->view('tests.index', $result) : $result;
     }
 
     /**
@@ -60,8 +61,7 @@ class TestController extends Controller
 			'name' => 'required|max:255',
 			'settings.time' => 'required|regex:/\d{2}:\d{2}/',
 			'settings.percent' => 'required|integer',
-			'settings.retake' => 'required|integer',
-			'settings.options' => 'array|present',
+			'settings.retake' => 'required|integer'
 		]);
 
 		if ($validator->fails()) {
@@ -124,8 +124,7 @@ class TestController extends Controller
             'name' => 'required|max:255',
             'settings.time' => 'required|regex:/\d{2}:\d{2}/',
             'settings.percent' => 'required|integer',
-            'settings.retake' => 'required|integer',
-            'settings.options' => 'array|present',
+            'settings.retake' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
@@ -156,6 +155,6 @@ class TestController extends Controller
     {
     	$test = Test::find($id);
     	$test->delete();
-        return $this->frontend();
+        return response()->json($this->index(1));
     }
 }
