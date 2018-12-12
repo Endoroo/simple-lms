@@ -28,6 +28,9 @@ class QuestionController extends Controller
         return response()->json(['success' => true, 'message' => 'Добавление прошло успешно']);
     }
 
+    public function update()
+	{}
+
     public function destroy($id)
     {
         if (Question::find($id)) {

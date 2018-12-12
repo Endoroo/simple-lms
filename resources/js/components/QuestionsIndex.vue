@@ -20,8 +20,8 @@
                  title="Редактировать вопрос"
                  cancel-title="Отмена"
                  ok-title="Обновить"
-                 @ok="update">
-            <b-form @submit="updateQuestion">
+                 @ok.prevent="update">
+            <b-form @submit.prevent="update">
                 <b-form-group label="Вопрос">
                     <b-form-input type="text"
                                   v-model="question.question"
@@ -43,7 +43,7 @@
                 <b-form-group label="Тип вопроса">
                     <b-form-select :options="qTypes"
                                    v-model="question.type"
-                                   @change="setSettings"
+                                   disabled
                                    aria-describedby="typeFieldInvalid"
                                    :state="question.type === null && error ? false : null">
                     </b-form-select>
@@ -142,14 +142,30 @@
             },
             showEditModal(question) {
                 this.error = false;
-                this.question = question;
-                if (this.question.type === 'list') {
-                    this.question.settings.variants.push({ variant: '', points: '0' });
+                let object = {
+                  question: question.question,
+                  points: question.points,
+                  type: question.type,
+                  settings: {}
+                };
+                if (question.type === 'list') {
+                    object.settings.strict = question.settings.strict;
+                    let variants = [];
+                    question.settings.variants.forEach(function(item) {
+                        if (item.variant !== '') {
+                            variants.push(item)
+                        }
+                    });
+                    variants.push({ variant: '', points: '0' });
+                    object.settings.variants = variants;
+                } else {
+                  object.settings = question.settings;
                 }
+                this.question = object;
+                this.questionId = question.id;
                 this.$refs.update.show();
             },
-            updateQuestion() {
-                event.preventDefault();
+            update() {
                 this.error = true;
                 let correct = false;
 
