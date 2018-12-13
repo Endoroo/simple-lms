@@ -199,12 +199,20 @@
                     axios.post(this.baseUrl + '/questions/' + this.questionId, this.question).then(response => {
                         if (response.data.success) {
                             this.test = null;
-                            this.flushForm();
+                            this.flush();
                             this.error = false;
-                            this.$refs.addQuestion.hide();
+                            this.$refs.update.hide();
                             this.internalMessage = response.data.message
                         }
                     });
+                }
+            },
+            flush() {
+                this.question = {
+                    question: '',
+                    points: 1,
+                    type: null,
+                    settings: {}
                 }
             },
 
@@ -215,7 +223,7 @@
             },
             remove() {
                 axios.delete(this.baseUrl + '/questions/' + this.questionId).then(response => {
-                    if (typeof response.data.error === 'undefined') {
+                    if (typeof response.data.errors === 'undefined') {
                         location.href = this.baseUrl + '/tests/' + this.testId + '/edit'
                     } else {
                         this.error = true
