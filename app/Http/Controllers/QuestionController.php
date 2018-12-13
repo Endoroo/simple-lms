@@ -28,8 +28,30 @@ class QuestionController extends Controller
         return response()->json(['success' => true, 'message' => 'Добавление прошло успешно']);
     }
 
-    public function update()
-	{}
+    public function update(Request $request, $id)
+	{
+		if ($question = Question::find($id)) {
+			$request = $request->validate([
+				'test_id' => 'required|int',
+				'question' => 'required|string',
+				'points' => 'required|numeric',
+				'type' => 'required|string',
+				'settings' => 'present|array'
+			]);
+			if ($question->test_id == $request['test_id']) {
+				$question->question = $request['question'];
+				$question->points = $request['points'];
+				$question->settings = $request['settings'];
+				$question->save();
+
+				return response()->json(['success' => true, 'message' => 'Обновление прошло успешно']);
+			}
+
+			return response()->json(['errors' => ['validation' => 'Validation failed'], 'message' => 'Something goes wrong']);
+		}
+
+		return response()->json(['errors' => ['question' => 'Question not found'], 'message' => 'Something goes wrong']);
+	}
 
     public function destroy($id)
     {
