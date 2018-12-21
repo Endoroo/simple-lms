@@ -54,6 +54,7 @@
                         <b-form-checkbox value="random_order">Случайный порядок вопросов</b-form-checkbox>
                         <b-form-checkbox value="allow_skip">Возможность пропускать вопросы</b-form-checkbox>
                         <b-form-checkbox value="allow_back">Возможность возвращаться назад</b-form-checkbox>
+                        <b-form-checkbox value="show_user_results">Показывать пользователю результаты</b-form-checkbox>
                     </b-form-checkbox-group>
                 </b-card>
                 <input type="hidden" :value="csrf" name="_token"/>

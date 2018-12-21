@@ -158,4 +158,72 @@ class TestController extends Controller
     	$test->delete();
         return response()->json($this->index(1));
     }
+
+    public function run($id)
+	{
+		$state = session('test');
+		if ($test = Test::find($id)) {
+			$result = false;
+			if (!$state) {
+				$questions = $test->questions;
+				foreach ($test->settings->options as $option) {
+					if ($option == 'random_order') {
+						/* @var $questions \Illuminate\Support\Collection */
+						$questions = $questions->shuffle();
+					}
+				}
+				$prepare = [];
+				$number = 0;
+				foreach ($questions as $question) {
+					$prepare[$question->id] = (object) [
+						'id' => $question->id,
+						'number' => ++$number,
+						'type' => $question->type,
+						'settings' => $question->settings,
+						'question' => $question->question
+					];
+				}
+				$questions = collect($prepare);
+				$result = (object) [
+					'id' => $test->id,
+					'questions' => $questions,
+					'beginning' => date('Y-m-d H:i:s'),
+					'time' => $test->settings->time,
+					'remain_time' => $test->settings->time,
+					'allow_skip' => in_array('allow_skip', $test->settings->options),
+					'allow_back' => in_array('allow_back', $test->settings->options),
+					'current_question' => $questions->first()->id,
+					'answers' => []
+				];
+				session(['test' => $result]);
+			}
+			else {
+				$time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $state->time);
+				sscanf($time, "%d:%d:%d", $hours, $minutes, $seconds);
+				$seconds = $hours * 60 * 60 + $minutes * 60 + $seconds;
+				$time = time() - strtotime($state->beginning);
+				if ($time <= $seconds) {
+					$remain = $seconds - $time;
+					$hours = floor($remain / 60 / 60);
+					$hours = $hours < 10 ? '0' . $hours : $hours;
+					$minutes = floor(($remain - $hours * 60 * 60) / 60);
+					$minutes = $minutes < 10 ? '0' . $minutes : $minutes;
+					$seconds = $remain - $hours * 60 * 60 - $minutes * 60;
+					$seconds = $seconds < 10 ? '0' . $seconds : $seconds;
+
+					$state->remain_time = implode(':' , [$hours, $minutes, $seconds]);
+					session(['test' => $state]);
+					$result = $state;
+				} else {
+					session()->forget('test');
+				}
+			}
+
+			return response()->view('tests.run', [
+				'test' => $result
+			]);
+		}
+
+		return response()->view('errors::403', ['exception' => new \Exception(__('Access denied'))]);
+	}
 }
