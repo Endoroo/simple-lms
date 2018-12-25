@@ -17,6 +17,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::middleware('auth')->group(function () {
     Route::resource('tests', 'TestController');
     Route::get('tests/{id}/run', 'TestController@run')->where('id', '[0-9]+');
+    Route::post('tests/{id}/next', 'TestController@nextQuestion')->where('id', '[0-9]+');
 
     Route::post('questions', 'QuestionController@create');
     Route::post('questions/{id}', 'QuestionController@update');

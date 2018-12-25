@@ -12,7 +12,12 @@
                                  :rows="3"
                                  :max-rows="6"></b-form-textarea>
             </div>
-            <b-btn>Продолжить</b-btn>
+            <div v-els class="mb-3">
+                <b-list-group>
+                    <b-list-group-item v-for="item in currentQ.settings.variants" href="#">{{ item.variant }}</b-list-group-item>
+                </b-list-group>
+            </div>
+            <b-btn @click="next">Продолжить</b-btn>
         </b-card>
         <p>{{ time }}</p>
     </b-container>
@@ -20,13 +25,22 @@
 
 <script>
   export default {
-    props: ['test'],
+    props: ['test', 'url'],
     data() {
       return {
         answer: null,
         currentQ: null,
         state: this.test,
         time: this.test.remain_time
+      }
+    },
+    methods: {
+      next() {
+        axios.post(this.url + '/next').then(response => {
+          if (typeof response.errors === 'undefined') {
+            this.currentQ = response.data.question
+          }
+        });
       }
     },
     mounted() {

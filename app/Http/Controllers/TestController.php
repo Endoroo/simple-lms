@@ -226,4 +226,37 @@ class TestController extends Controller
 
 		return response()->view('errors::403', ['exception' => new \Exception(__('Access denied'))]);
 	}
+
+	public function nextQuestion($id)
+	{
+		/* @var $state object */
+		if ($state = session('test')) {
+			if (($test = Test::find($state->id)) && $state->id == $id) {
+				$next = false;
+				$questions = $state->questions->toArray();
+				foreach($state->questions as $question) {
+					$next = next($questions);
+					if ($question->id == $state->current_question) break;
+				}
+				$state->current_question = $next ? $next->id : false;
+				session(['test' => $state]);
+				if ($next) {
+					return response()->json(['question' => $next]);
+				}
+			}
+
+			return response()->json([
+				'errors' => ['test' => 'Wrong test settings'],
+				'message' => __('Something goes wrong')
+			]);
+		}
+
+		return response()->json([
+			'errors' => ['session' => __('Can\'t get the session')],
+			'message' => __('Something goes wrong')
+		]);
+	}
+
+	public function end()
+	{}
 }

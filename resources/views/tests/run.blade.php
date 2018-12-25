@@ -2,7 +2,7 @@
 
 @section('content')
     @if($test)
-    <test-run :test="{{ json_encode($test) }}"></test-run>
+    <test-run :test="{{ json_encode($test) }}" url="{{ url('tests/' . $test->id) }}"></test-run>
     @else
     <b-container>
         <b-card header="Результаты">
